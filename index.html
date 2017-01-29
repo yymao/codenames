@@ -42,15 +42,17 @@
   .white{
     background-color: #EEEEEE;
   }
+  .orange{
+    background-color: rgb(223, 117, 20);
+  }
   </style>
 </head>
 <body>
 
 <div id="main">
 <div id="control">
-<button class="pure-button yellow" id="new_board">New board of words</button>
-<button class="pure-button blue" id="master_blue">Spymaster (blue first)</button>
-<button class="pure-button red" id="master_red">Spymaster (red first)</button>
+<button class="pure-button orange" id="new_board">New board of words</button>
+<button class="pure-button blue" id="new_master">Spymaster (blue first)</button>
 <hr/>
 </div>
 
@@ -82,52 +84,69 @@ function change_color(){
   var i;
   for (i = 0; i < order.length-1; i++){
     if ($(this).hasClass(order[i])){
-      $(this).removeClass();
+      $(this).removeClass(order[i]);
       $(this).addClass(order[i+1]);
       break;
     }
   }
 };
 
-function initial_master(first){
+$("#new_master").click(function(){
   if (started && !confirm("Do you want to change to a new spymaster card?")) return;
+
   $("td").off("click");
-  $("table").css("max-width", "320px");
-  $("table").css("border-spacing", "5px");
-  $("tr").css("height", "50px");
+  $("table").css("max-width", "400px");
+  $("tr").css("height", "60px");
+
   var arr = [];
   var i;
-  arr.push('black');
+  arr.push("black");
   for (i = 0; i < 8; i++){
-    arr.push('red');
-    arr.push('blue');
+    arr.push("red");
+    arr.push("blue");
   }
-  for (i = 0; i < 7; i++) arr.push('yellow');
-  arr.push(first);
+  for (i = 0; i < 7; i++) arr.push("yellow");
+
+  if ($(this).hasClass("blue")){
+    arr.push("blue");
+    $(this).removeClass("blue");
+    $(this).addClass("red");
+    $(this).text("Spymaster (red first)");
+  }
+  else if ($(this).hasClass("red")){
+    arr.push("red");
+    $(this).removeClass("red");
+    $(this).addClass("blue");
+    $(this).text("Spymaster (blue first)");
+  }
+
   $("td").each(function(index) {
     $(this).removeClass();
     $(this).addClass(choose(arr));
     $(this).text("");
   });
+
   started = true;
-}
+});
 
 $("#new_board").click(function(){
   if (started && !confirm("Do you want to change to a new board of words?")) return;
+
   $("table").css("max-width", "100%");
   $("tr").css("height", "120px");
+
   $("td").each(function(index) {
     $(this).removeClass();
     $(this).addClass("white");
     $(this).text(choose(words));
   });
+
   if (words.length < 25) $("#new_board").prop("disabled", true);
+
   $("td").click(change_color);
+
   started = true;
 });
-
-$("#master_red").click(function(){initial_master("red");});
-$("#master_blue").click(function(){initial_master("blue");});
 
 </script>
 </body>
