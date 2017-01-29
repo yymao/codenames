@@ -11,12 +11,12 @@
     padding: 15px 5px;
   }
   #control{
-    padding: 0px 15px;
+    padding: 0px 5px;
   }
   table{
     width:100%;
     table-layout: fixed;
-    border-spacing: 15px;
+    border-spacing: 5px;
     border-collapse: separate;
   }
   tr{
@@ -92,6 +92,9 @@ function change_color(){
 function initial_master(first){
   if (started && !confirm("Do you want to change to a new spymaster card?")) return;
   $("td").off("click");
+  $("table").css("max-width", "320px");
+  $("table").css("border-spacing", "5px");
+  $("tr").css("height", "50px");
   var arr = [];
   var i;
   arr.push('black');
@@ -111,6 +114,8 @@ function initial_master(first){
 
 $("#new_board").click(function(){
   if (started && !confirm("Do you want to change to a new board of words?")) return;
+  $("table").css("max-width", "100%");
+  $("tr").css("height", "120px");
   $("td").each(function(index) {
     $(this).removeClass();
     $(this).addClass("white");
