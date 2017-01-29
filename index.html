@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Codenames</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/pure/0.6.2/pure-min.css">
+  <style>
+  #main{
+    width: 100%;
+    padding: 15px 5px;
+  }
+  #control{
+    padding: 0px 15px;
+  }
+  table{
+    width:100%;
+    table-layout: fixed;
+    border-spacing: 15px;
+    border-collapse: separate;
+  }
+  tr{
+    height:120px;
+  }
+  td{
+    text-align: center;
+    font-weight: bold;
+    font-size: 250%;
+  }
+  .blue{
+    background-color: #3b8bba;
+  }
+  .red{
+    background-color: #dd514c;
+  }
+  .yellow{
+    background-color: #FFDFB8;
+  }
+  .black{
+    background-color: #333333;
+  }
+  .white{
+    background-color: #EEEEEE;
+  }
+  </style>
+</head>
+<body>
+
+<div id="main">
+<div id="control">
+<button class="pure-button yellow" id="new_board">New board of words</button>
+<button class="pure-button blue" id="master_blue">Spymaster (blue first)</button>
+<button class="pure-button red" id="master_red">Spymaster (red first)</button>
+<hr/>
+</div>
+
+<table>
+  <tr><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script>
+var words = ["ALPHABET", "ALPS", "AMAZON", "AMBULANCE", "ANGEL", "ANTARCTICA", "APPLE", "ARM", "ARMY", "AZTEC", "BABY", "BACK", "BACKPACK", "BALL", "BALLOON", "BANANA", "BANK", "BAR", "BARBECUE", "BARK", "BATHROOM", "BATTERY", "BEAR", "BED", "BEE", "BEETLE", "BELL", "BIBLE", "BIRD", "BLOCK", "BOARD", "BOLT", "BOMB", "BOND", "BOOK", "BOSS", "BOTTLE", "BOWL", "BOX", "BOY", "BRAIN", "BRAZIL", "BRIDGE", "BRUSH", "BUTTERFLY", "BUTTON", "CAPPUCCINO", "CAR", "CARPET", "CARROT", "CASINO", "CAT", "CAVE", "CD", "CENTER", "CHAIR", "CHARRIOT", "CHECK", "CHEF", "CHICK", "CHIEF", "CHILD", "CHINA", "CHOCOLATES", "CHURCH", "CIRCLE", "CIRCUS", "CLOCK", "CLOWN", "CODE", "COFFEE", "COFFEESHOP", "COLD", "COMET", "COMPASS", "COMPOUND", "COMPUTER", "CONDUCTOR", "CRICKET", "CROSS", "CRYSTAL", "CUP", "CYCLE", "DANCE", "DATABASE", "DAY", "DECK", "DEGREE", "DESK", "DIAMOND", "DISEASE", "DOCTOR", "DOG", "DRAGON", "DRESS", "DRILL", "DRINK", "DRUM", "DUCK", "DUNG", "EARS", "EARTH", "EGG", "ELECTRICITY", "ELEPHANT", "EMBASSY", "ENGLAND", "ERASER", "EXPLOSIVE", "EYE", "EYES", "FACE", "FALL", "FAMILY", "FAN", "FEATHER", "FESTIVAL", "FIGURE", "FILM", "FINGER", "FIRE", "FISH", "FLOOD", "FLOWER", "FLUTE", "FOOT", "FORCE", "FORK", "FRANCE", "FREEWAY", "FRUIT", "FUNGUS", "GAME", "GARDEN", "GAS", "GATE", "GEMSTONE", "GENIUS", "GERMANY", "GHOST", "GIRL", "GLOVES", "GOD", "GOLD", "GRACE", "GRAPES", "GROUND", "GUITAR", "HAMMER", "HAND", "HAT", "HEART", "HEIROGLYPH", "HELICOPTER", "HIGHWAY", "HIMALAYAS", "HOLE", "HOLLYWOOD", "HONEY", "HOOD", "HOROSCOPE", "HORSE", "HOSE", "HOSPITAL", "HOTEL", "ICE", "ICE CREAM", "INDIA", "INSECT", "IRON", "JACK", "JET", "JUNK", "JUPITER", "KETCHUP", "KEY", "KING", "KITCHEN", "KIWI", "KNIFE", "KNIGHT", "LASER", "LAWYER", "LEATHER", "LEG", "LEMON", "LIBRARY", "LIFE", "LINK", "LIQUID", "LOCH NESS", "LOG", "LONDON", "LUCK", "MAGNET", "MAIL", "MAN", "MAP", "MARBLE", "MASS", "MAZE", "MEAT", "METEOR", "MICROSCOPE", "MILK", "MILKSHAKE", "MINT", "MISSILE", "MIST", "MODEL", "MONEY", "MONSTER", "MOON", "MOSQUITO", "MOUNT", "MOUTH", "NAIL", "NAVY", "NECKLACE", "NEEDLE", "NET", "NEW YORK", "NOTE", "NUT", "OCTOPUS", "OIL", "ONION", "ORANGE", "PAINTBRUSH", "PAN", "PANTS", "PAPER", "PARACHUTE", "PARK", "PART", "PASS", "PASSPORT", "PASTE", "PEBBLE", "PENDULUM", "PEPPER", "PERFUME", "PHOENIX", "PIANO", "PIE", "PILLOW", "PILOT", "PIN", "PIRATE", "PISTOL", "PIT", "PITCH", "PLANE", "PLANET", "PLATYPUS", "PLAY", "POCKET", "POLE", "POLICE", "POOL", "PORT", "POST OFFICE", "POTATO", "POUND", "PRINCESS", "PRINTER", "PRISON", "PYRAMID", "RACKET", "RADAR", "RAINBOW", "RECORD", "RED", "RESTAURANT", "RIFLE", "RING", "ROBIN", "ROBOT", "ROCK", "ROCKET", "ROOF", "ROOM", "ROOT", "ROPE", "ROULETTE", "ROUND", "SALT", "SAND", "SANDPAPER", "SANDWICH", "SATELLITE", "SATURN", "SCALE", "SCHOOL", "SCIENTIST", "SCISSORS", "SEAL", "SERVER", "SEX", "SHIP", "SHOES", "SHOP", "SHOWER", "SIGNATURE", "SINK", "SKELETON", "SLAVE", "SLUG", "SMUGGLER", "SNAIL", "SOCK", "SOFTWARE", "SOLDIER", "SOLID", "SPACE", "SPECTRUM", "SPHERE", "SPICE", "SPIDER", "SPIKE", "SPIRAL", "SPOON", "SPOT", "SPOTLIGHT", "SPRING", "SPY", "SQUARE", "STAIRCASE", "STAR", "STATE", "STICK", "STOCK", "STOMACH", "STREAM", "STRIKE", "STRING", "SUN", "SUNGLASSES", "SUPERHERO", "SURVEYOR", "SWIMMING", "SWING", "SWORD", "TABLE", "TABLET", "TAG", "TAIL", "TAP", "TAPESTRY", "TEETH", "TELESCOPE", "TELEVISION", "TEMPLE", "TENNIS", "THEATER", "THERMOMETER", "TICK", "TIGER", "TIME", "TOILET", "TONGUE", "TORCH", "TORPEDO", "TRAIN", "TREADMILL", "TRIANGLE", "TRIP", "TUBE", "TUNNEL", "TURKEY", "UMBRELLA", "VACCUUM", "VAMPIRE", "VIDEOTAPE", "VULTURE", "WAKE", "WASHINGTON", "WATER", "WEAPON", "WEB", "WHALE", "WHEELCHAIR", "WINDOW", "WOMAN", "WORM", "X-RAY", "YARD"];
+
+var started = false;
+
+function choose(arr){
+  if (!arr.length) return;
+  var i = Math.floor(Math.random() * arr.length);
+  var o = arr[i];
+  arr.splice(i, 1);
+  return o;
+}
+
+function change_color(){
+  var order = ["white", "blue", "red", "yellow", "white"];
+  var i;
+  for (i = 0; i < order.length-1; i++){
+    if ($(this).hasClass(order[i])){
+      $(this).removeClass();
+      $(this).addClass(order[i+1]);
+      break;
+    }
+  }
+};
+
+function initial_master(first){
+  if (started && !confirm("Do you want to change to a new spymaster card?")) return;
+  $("td").off("click");
+  var arr = [];
+  var i;
+  arr.push('black');
+  for (i = 0; i < 8; i++){
+    arr.push('red');
+    arr.push('blue');
+  }
+  for (i = 0; i < 7; i++) arr.push('yellow');
+  arr.push(first);
+  $("td").each(function(index) {
+    $(this).removeClass();
+    $(this).addClass(choose(arr));
+    $(this).text("");
+  });
+  started = true;
+}
+
+$("#new_board").click(function(){
+  if (started && !confirm("Do you want to change to a new board of words?")) return;
+  $("td").each(function(index) {
+    $(this).removeClass();
+    $(this).addClass("white");
+    $(this).text(choose(words));
+  });
+  if (words.length < 25) $("#new_board").prop("disabled", true);
+  $("td").click(change_color);
+  started = true;
+});
+
+$("#master_red").click(function(){initial_master("red");});
+$("#master_blue").click(function(){initial_master("blue");});
+
+</script>
+</body>
+</html>
