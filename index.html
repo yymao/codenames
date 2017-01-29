@@ -79,13 +79,15 @@ function choose(arr){
   return o;
 }
 
-function change_color(obj_this){
+function change_color(){
   var order = ["white", "blue", "red", "yellow", "white"];
   var i;
+  console.log(order);
   for (i = 0; i < order.length-1; i++){
-    if (obj_this.hasClass(order[i])){
-      obj_this.removeClass();
-      obj_this.addClass(order[i+1]);
+    if ($(this).hasClass(order[i])){
+      console.log(order[i]);
+      $(this).removeClass();
+      $(this).addClass(order[i+1]);
       break;
     }
   }
@@ -143,7 +145,7 @@ $("#new_board").click(function(){
 
   if (words.length < 25) $("#new_board").prop("disabled", true);
 
-  $("td").click(function(){change_color($(this));});
+  $("td").off("click").click(change_color);
 
   started = true;
 });
